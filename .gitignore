@@ -1,0 +1,57 @@
+# -----------------------------
+# Node
+# -----------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# dotenv
+.env
+.env.*.local
+
+# -----------------------------
+# Build output
+# -----------------------------
+dist/
+build/
+out/
+tmp/
+temp/
+
+# -----------------------------
+# TypeScript
+# -----------------------------
+*.tsbuildinfo
+
+# -----------------------------
+# React / Next / Vite / Webpack
+# -----------------------------
+.cache/
+.next/
+.vercel/
+.vite/
+vite.config.ts.timestamp*
+*.local
+
+# -----------------------------
+# IDE / Editor
+# -----------------------------
+.vscode/
+.idea/
+*.swp
+
+# Mac / Windows system files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Logs
+logs/
+*.log
+
+# JetBrains
+*.iml
