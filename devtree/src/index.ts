@@ -1,0 +1,10 @@
+import colors from 'colors';
+import server from './server';
+
+const app = server;
+
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+    console.log(colors.magenta.italic('Server is running on port:'), port);
+});

@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist", // Directorio de salida para los archivos compilados
+        "rootDir": "./src", // Directorio raíz de los archivos fuente
+        "lib": ["ESNext"], // Bibliotecas estándar a incluir
+        "target": "esnext", // Versión de JavaScript a la que se compilará
+        "moduleResolution": "nodenext", // Resolución de módulos
+        "module": "nodenext", // Sistema de módulos
+        "strict": false, // Habilitar todas las verificaciones estrictas
+        "sourceMap": true, // Generar archivos de mapa de origen
+        "esModuleInterop": true, // Habilitar interoperabilidad entre módulos ES y CommonJS 
+        "declaration": true, // Generar archivos de declaración (.d.ts)
+
+    },
+    "include": ["src/**/*.ts"], // Incluir todos los archivos en el directorio src que tengan la extensión .ts
+}
