@@ -1,12 +1,9 @@
 import { Router } from "express";
+import { createAccount } from "./handlers";
 
 const router = Router();
 
 /** Auth and registration */
-router.post('/auth/register', (req, res) => {
-    console.log('Auth endpoint hit');
-    console.log('Request body:', req.body);
-    res.send('Auth endpoint');
-});
+router.post('/auth/register', createAccount);
 
 export default router;
