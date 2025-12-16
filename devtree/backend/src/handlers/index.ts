@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import slug from "slug";
 import User from "../models/User";
-import colors from "colors";
 import { checkPassword, hashPassword } from "../utils/auth";
 
 export const createAccount =  async (req: Request, res: Response) => {
@@ -41,12 +40,6 @@ export const createAccount =  async (req: Request, res: Response) => {
 }
 
 export const login = async (req: Request, res: Response) => {
-    
-    let errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
 
     const {email, password } = req.body;
  
