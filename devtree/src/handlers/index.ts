@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 import slug from "slug";
 import User from "../models/User";
 import colors from "colors";
-import { hashPassword } from "../utils/auth";
+import { checkPassword, hashPassword } from "../utils/auth";
 
 export const createAccount =  async (req: Request, res: Response) => {
 
@@ -28,7 +28,7 @@ export const createAccount =  async (req: Request, res: Response) => {
     const handleExists = await User.findOne({ handle });
 
     if (handleExists) {
-        return res.status(400).send({ message: 'Username already exists' });
+        return res.status(409).send({ message: 'Username already exists' });
     }
 
 
@@ -40,3 +40,31 @@ export const createAccount =  async (req: Request, res: Response) => {
     res.status(201).send({ message: 'User registered successfully' });
 }
 
+export const login = async (req: Request, res: Response) => {
+    
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {email, password } = req.body;
+ 
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(404).send({ message: "User doesn't exist" });
+    }
+
+    // Check password
+    const isPasswordCorrect = await checkPassword(password, user.password);
+    if (!isPasswordCorrect) {
+        return res.status(401).send({ message: "Incorrect password" });
+    }
+
+    res.send({ message: 'Login successful' });
+    // console.log(colors.green('User logged in:'), user.email);
+    // console.log(user.password);
+    // res.send({ message: 'Login successful' });
+
+}
