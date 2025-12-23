@@ -6,20 +6,12 @@ import { checkPassword, hashPassword } from "../utils/auth";
 
 export const createAccount =  async (req: Request, res: Response) => {
 
-    // Errors control 
-    let errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
-
     const {email, password } = req.body;
  
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-        return res.status(400).send({ message: 'Email already exists' });
+        return res.status(409).send({ message: 'Email already exists' });
     }
 
     const handle = slug(req.body.handle, '_');
@@ -28,6 +20,7 @@ export const createAccount =  async (req: Request, res: Response) => {
 
     if (handleExists) {
         return res.status(409).send({ message: 'Username already exists' });
+
     }
 
 
@@ -41,6 +34,12 @@ export const createAccount =  async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
 
+
+    let errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+    
     const {email, password } = req.body;
  
     // Check if user exists

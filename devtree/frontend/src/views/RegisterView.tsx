@@ -21,12 +21,14 @@ export default function RegisterView() {
 
   const handleRegister = async (formData: RegisterForm) => {
     try {
-      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, formData);
-      toast(data);
-      reset();
+      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, formData);
+      toast.success(data.message);
+      reset();  
     } catch (error) {
       if(isAxiosError(error) && error.response){
-        console.error('Error message: ', error.response?.data.message);
+       toast.error(error.response?.data?.message || 'Unexpected error');
+
+
     }
   }
     // console.log(formData);
