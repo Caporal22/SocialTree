@@ -21,11 +21,10 @@ export default function LoginView() {
   const handleLogin = async (formData: LoginForm) => {
     try {
       const {data} = await api.post(`/auth/login`, formData);
-      localStorage.setItem('AUTH_TOKEN', data);
+      localStorage.setItem('AUTH_TOKEN', data.token); // data.token -> Get the token
     } catch (error) {
       if(isAxiosError(error) && error.response){
        toast.error(error.response?.data?.message || 'Unexpected error');
-
 
     }
   }

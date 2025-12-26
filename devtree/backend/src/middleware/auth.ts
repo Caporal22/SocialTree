@@ -20,13 +20,13 @@ export const authenticate = async (
   const bearer = req.headers.authorization;
 
   if (!bearer) {
-    return res.status(401).send({ message: "Unauthorized" });
+    return res.status(401).send({ message: "Unauthorized --bearer" });
   }
 
   const [, token] = bearer.split(" ");
 
   if (!token) {
-    return res.status(401).send({ message: "Unauthorized" });
+    return res.status(401).send({ message: "Unauthorized --token" });
   }
 
   try {
@@ -40,6 +40,6 @@ export const authenticate = async (
       next();
     }
   } catch (error) {
-    res.status(500).send({ message: "Invalid token" });
+    res.status(401).send({ message: "Invalid token" });
   }
 };
