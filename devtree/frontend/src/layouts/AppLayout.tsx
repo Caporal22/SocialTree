@@ -19,7 +19,7 @@ export default function AppLayout() {
     if(isError) return <Navigate to={'/auth/login'}/>
 
     
-    console.log(data)
+    // console.log(data)
     // console.log(isLoading)
     // console.log(isError)
     // console.log(error?.message)
