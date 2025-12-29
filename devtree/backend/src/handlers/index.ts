@@ -103,11 +103,16 @@ export const updateProfile = async (req: Request, res: Response) => {
 export const uploadImage = async (req: Request, res: Response) => {
 
     const form = formidable({multiples: false})
-    form.parse(req, (error, fields, files) =>{
-        console.log(files)
-    })
+    
 
     try {
+        form.parse(req, (error, fields, files) =>{
+            
+            cloudinary.uploader.upload(files.image[0].filepath, {}, async function(error, result){
+                console.log(error)
+                console.log(result)
+            })
+        })
         
     } catch (e) {
         const error = new Error("Some failed")
