@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import slug from "slug";
 import formidable from 'formidable'
+import {v4 as uuid} from 'uuid'
 import User from "../models/User";
 import { checkPassword, hashPassword } from "../utils/auth";
 import { generateJWT } from "../utils/jwt";
@@ -108,9 +109,14 @@ export const uploadImage = async (req: Request, res: Response) => {
     try {
         form.parse(req, (error, fields, files) =>{
             
-            cloudinary.uploader.upload(files.image[0].filepath, {}, async function(error, result){
-                console.log(error)
-                console.log(result)
+            cloudinary.uploader.upload(files.image[0].filepath, { public_id: uuid() }, async function(error, result){
+                if(error){
+                    const error = new Error("Some failed uploading image")
+                    return res.status(500).json({error : error.message})
+                }
+                if(result){
+                    console.log(result.secure_url)
+                }
             })
         })
         
