@@ -122,7 +122,7 @@ export const uploadImage = async (req: Request, res: Response) => {
         
     } catch (e) {
         const error = new Error("Some failed")
-        return res.status(500).json({error : error.message})
+        return res.status(500).json({error : error.message});
     }
 
 }
