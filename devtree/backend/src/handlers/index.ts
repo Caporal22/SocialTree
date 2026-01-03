@@ -109,13 +109,15 @@ export const uploadImage = async (req: Request, res: Response) => {
     try {
         form.parse(req, (error, fields, files) =>{
             
-            cloudinary.uploader.upload(files.image[0].filepath, { public_id: uuid() }, async function(error, result){
+            cloudinary.uploader.upload(files.image2[0].filepath, { public_id: uuid() }, async function(error, result){
                 if(error){
                     const error = new Error("Some failed uploading image")
                     return res.status(500).json({error : error.message})
                 }
                 if(result){
-                    console.log(result.secure_url)
+                    req.user.image = result.secure_url
+                    await req.user.save();
+                    res.json({image: result.secure_url})
                 }
             })
         })
