@@ -42,16 +42,11 @@ export default function LinkTreeView() {
     const updatedLinks = devTreeLinks.map(link => link.name === e.target.name ? {...link, url: e.target.value} : link)
     // console.log(updatedLinks)
     setDevTreeLinks(updatedLinks)
-
-    queryClient.setQueryData(['user'], (prevData: User) => {
-      return {
-        ...prevData,
-        links: JSON.stringify(updatedLinks)
-      }
-    })
     // console.log(e.target.value)
     // console.log(e.target.name)
   }
+
+  const links : SocialNetwork[] = JSON.parse(user.links)
 
   const handleEnableLink = (socialNetwork: string) => {
     const updatedLinks = devTreeLinks.map(link =>  {
@@ -67,10 +62,28 @@ export default function LinkTreeView() {
     // console.log(updatedLinks)
     setDevTreeLinks(updatedLinks)
 
+    let updatedItems: SocialNetwork[] = []
+
+    const selectedSocialNetwork = updatedLinks.find(link => link.name === socialNetwork)
+    if(selectedSocialNetwork?.enabled) {
+      // console.log('Habilitando', selectedSocialNetwork)
+      // console.log(links.length)
+      const newItem = {
+        ...selectedSocialNetwork,
+        id: links.length + 1
+      }
+      updatedItems = [...links, newItem]
+    } else {
+      console.log('Deshabilitando...')
+    }
+
+    console.log(updatedItems)
+
+    // Almacena en la base de datos
     queryClient.setQueryData(['user'], (prevData: User) => {
       return {
         ...prevData,
-        links: JSON.stringify(updatedLinks)
+        links: JSON.stringify(updatedItems)
       }
     })
   }
