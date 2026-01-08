@@ -66,18 +66,53 @@ export default function LinkTreeView() {
 
     const selectedSocialNetwork = updatedLinks.find(link => link.name === socialNetwork)
     if(selectedSocialNetwork?.enabled) {
+      const id = links.filter(link => link.id).length + 1
+      if(links.some(link => link.name === socialNetwork)) {
+        updatedItems = links.map(link => {
+          if( link.name === socialNetwork) {
+            return {
+              ...link,
+              enabled: true,
+              id
+            }
+          } else {
+            return link
+          }
+        })
+      } else {
+        const newItem = {
+        ...selectedSocialNetwork,
+        id
+      }
+        updatedItems = [...links, newItem]
+      }
       // console.log('Habilitando', selectedSocialNetwork)
       // console.log(links.length)
-      const newItem = {
-        ...selectedSocialNetwork,
-        id: links.length + 1
-      }
-      updatedItems = [...links, newItem]
+      
     } else {
-      console.log('Deshabilitando...')
+      const indexToUpdate = links.findIndex(link => link.name === socialNetwork)
+      updatedItems = links.map(link => {
+        if(link.name === socialNetwork){
+          return {
+            ...link,
+            id: 0,
+            enabled: 0
+          }
+        }else if(link.id > indexToUpdate){
+          return {
+            ...link,
+            id: link.id - 1
+          }
+        } else {
+          return link
+        }
+      })
+      // console.log(indexToUpdate)
     }
 
-    console.log(updatedItems)
+
+
+    // console.log(updatedItems)
 
     // Almacena en la base de datos
     queryClient.setQueryData(['user'], (prevData: User) => {
