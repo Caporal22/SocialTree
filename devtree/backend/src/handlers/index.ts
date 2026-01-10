@@ -127,5 +127,20 @@ export const uploadImage = async (req: Request, res: Response) => {
         const error = new Error("Some failed")
         return res.status(500).json({error : error.message});
     }
-
 }
+
+export const getUserByHandle = async (req: Request, res: Response) => {
+    try {
+        const { handle } = req.params;
+
+        const user = await User.findOne({ handle });
+
+        if (!user) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
+
+        return res.json(user);
+    } catch (e) {
+        return res.status(500).json({ error: "Something failed" });
+    }
+};

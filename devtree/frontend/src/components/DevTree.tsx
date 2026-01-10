@@ -7,6 +7,7 @@ import { SocialNetwork, type User } from "../types";
 import { useEffect, useState } from "react";
 import DevTreeLink from "./DevTreeLink";
 import { set } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 
 type DevTreeProps = {
     data: User
@@ -22,6 +23,7 @@ export default function DevTree({data}: DevTreeProps) {
 
     // console.log(enabledLinks)
 
+    const queryClient = useQueryClient();
 
     const handleDragEnd = (event: DragEndEvent) => {
         
@@ -33,8 +35,20 @@ export default function DevTree({data}: DevTreeProps) {
             const newIndex = enabledLinks.findIndex(link => link.id === over?.id)
             const order = arrayMove(enabledLinks, prevIndex, newIndex)
             setEnabledLinks(order)
-            console.log(prevIndex)
-            console.log(newIndex)
+            // console.log(prevIndex)
+            // console.log(newIndex)
+
+            const disabledLinks: SocialNetwork[] = JSON.parse(data.links).filter((item: SocialNetwork) => !item.enabled)
+            // console.log(disabledLinks)
+
+            const links = order.concat(disabledLinks)
+
+            queryClient.setQueryData(['user'], (prevData: User) => {
+                return {
+                    ...prevData,
+                    links: (JSON.stringify(links))
+                }
+            })
         }
 
     }
@@ -62,7 +76,7 @@ export default function DevTree({data}: DevTreeProps) {
                     <div className="flex justify-end">
                         <Link 
                             className="font-bold text-right text-slate-800 text-2xl"
-                            to={''}
+                            to={`/${data.handle}`}
                             target="_blank"
                             rel="noreferrer noopener"
                         >Visitar Mi Perfil: {data.handle}</Link>
