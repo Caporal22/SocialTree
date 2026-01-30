@@ -44,3 +44,18 @@ export async function uploadImage(file: File) {
     throw error
   }
 }
+
+export async function getUserByHandle(handle: string) {
+    
+  try {
+    console.log(handle)
+    return 
+    const { data } = await api.get<string>(`/user/${handle}`)
+    return data
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message)
+    }
+    throw error
+  }
+}
